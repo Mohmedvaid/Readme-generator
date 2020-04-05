@@ -11,21 +11,28 @@ async function getUsername() {
       name: "user",
     });
 
-    const { data } = await axios.get(
-      `https://api.github.com/users/${user}/events/public`
-    ); //https://api.github.com/users/${user}
-    //console.log(data[0].actor.avatar_url);
+    getData(user)
 
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].payload.hasOwnProperty("commits")) {
-        let author = data[i].payload.commits[0].author.name
-        let email = data[i].payload.commits[0].author.email
-           console.log(`Author: ${author} Email: ${email}`);
-          i = data.length;  
-      }
-    }
   } catch (err) {
     console.log(err);
+  }
+}
+
+//This function will take a 'user' parameter and retrive the data from github api
+async function getData(user) {
+  const { data } = await axios.get(
+    `https://api.github.com/users/${user}/events/public`
+  ); //https://api.github.com/users/${user}
+  //console.log(data[0].actor.avatar_url);
+
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].payload.hasOwnProperty("commits")) {
+      let author = data[i].payload.commits[0].author.name;
+      let email = data[i].payload.commits[0].author.email;
+      let avatar = data[i].actor.avatar_url;
+      console.log(author+ " " +email+" "+avatar)
+      i = data.length;
+    }
   }
 }
 
