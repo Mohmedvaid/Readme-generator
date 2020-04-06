@@ -5,7 +5,6 @@ const inquirer = require("inquirer");
 //Initial function prompts for username and calls other functions
 getUsername();
 
-
 async function getUsername() {
   try {
     const { user } = await inquirer.prompt({
@@ -14,7 +13,7 @@ async function getUsername() {
     });
 
     //
-    getData(user)
+    getData(user);
     getProjectInfo(user);
   } catch (err) {
     console.log(err);
@@ -25,7 +24,7 @@ async function getUsername() {
 async function getData(user) {
   let basicInfo;
 
-  //Get call is made to github api and received array is saved in 'data' variable 
+  //Get call is made to github api and received array is saved in 'data' variable
   const { data } = await axios.get(
     `https://api.github.com/users/${user}/events/public`
   );
@@ -36,26 +35,27 @@ async function getData(user) {
       basicInfo = {
         author: data[i].payload.commits[0].author.name,
         email: data[i].payload.commits[0].author.email,
-        avatar: data[i].actor.avatar_url
-      }
+        avatar: data[i].actor.avatar_url,
+      };
       //this terminates the loop
       i = data.length;
     }
   }
 
   //Coverting the raw text to proper format and saving to ''basicData
-  let basicData = `# My Github Profile\n![Profile Image](${basicInfo.avatar})\nAuthor Name: ${basicInfo.author}\nEmail: ${basicInfo.email}\n` 
-  
-  //This function creates the Readme file with basicInfo 
-  createBasicInfo(basicData)
+  let basicData = `# My Github Profile\n![Profile Image](${basicInfo.avatar})\\
+  Author Name: ${basicInfo.author}\nEmail: ${basicInfo.email}\n`;
+
+  //This function creates the Readme file with basicInfo
+  createBasicInfo(basicData);
 
   //getData function ends
 }
 
 //Creating createBasicInfo Function
-function createBasicInfo(basicData){
-  fs.writeFile(`Readme.md`,basicData, function(err){
-    if(err){
+function createBasicInfo(basicData) {
+  fs.writeFile(`Readme.md`, basicData, function (err) {
+    if (err) {
       console.log(err);
     }
   });
@@ -116,12 +116,19 @@ async function getProjectInfo(user) {
 
 //creating the appendReadme Function
 function appendReadme(response, user) {
-
   //saving the badge
   let badge = `![GitHub commit activity](https://img.shields.io/github/commit-activity/m/${user}/${response.repo}?style=plastic)`;
 
   //formating the user responses and saving to 'data' variable
-  let data = `# ${response.project.toUpperCase()}\n${badge}\n\n## Description\n${response.description}\n\n## Table of Contents\n TBD\n\n## Installation\n${response.installation}\n\n## Usage\n${response.usage}\n\n## License\n${response.license}\n\n## Contributors\n${response.contributors}\n\n## Tests\n${response.tests}\n\n`;
+  let data = `# ${response.project.toUpperCase()}\n${badge}\n\n## Description\n${
+    response.description
+  }\n\n## Table of Contents\n TBD\n\n## Installation\n${
+    response.installation
+  }\n\n## Usage\n${response.usage}\n\n## License\n${
+    response.license
+  }\n\n## Contributors\n${response.contributors}\n\n## Tests\n${
+    response.tests
+  }\n\n`;
 
   //adding the data to readme file
   fs.appendFile("Readme.md", data, function (err) {
@@ -131,4 +138,3 @@ function appendReadme(response, user) {
     console.log("Success!");
   });
 }
-
