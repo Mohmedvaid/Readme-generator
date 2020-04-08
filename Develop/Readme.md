@@ -2,7 +2,7 @@
 ![Profile Image](https://avatars.githubusercontent.com/u/59095556?)\
   Author Name: Mohmedhusain Vaid
 Email: hussainvaid7@gmail.com
-# MY PORTFOLIO
+# MY PORFOLIO
 ![GitHub commit activity](https://img.shields.io/github/last-commit/mohmedvaid/My-Portfolio?style=for-the-badge)
 
 ## Table of Content
