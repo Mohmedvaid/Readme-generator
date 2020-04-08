@@ -1,6 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const inquirer = require("inquirer");
+var basicInfo;
 
 //Initial function prompts for username and calls other functions
 getUsername();
@@ -13,7 +14,8 @@ async function getUsername() {
     });
 
     //
-    getData(user);
+    await getData(user);
+  
     getProjectInfo(user);
   } catch (err) {
     console.log(err);
@@ -22,7 +24,7 @@ async function getUsername() {
 
 //This function will take a 'user' parameter and retrive the data from github api
 async function getData(user) {
-  let basicInfo;
+  //let basicInfo;
 
   //Get call is made to github api and received array is saved in 'data' variable
   const { data } = await axios.get(
@@ -41,6 +43,7 @@ async function getData(user) {
       i = data.length;
     }
   }
+  
 
   //Coverting the raw text to proper format and saving to ''basicData
   let basicData = `# My Github Profile\n![Profile Image](${basicInfo.avatar})\\
@@ -67,43 +70,43 @@ async function getProjectInfo(user) {
     .prompt([
       {
         type: "input",
-        message: "What is your project name?",
+        message: "What is your project name: ",
         name: "project",
       },
       {
         type: "input",
         message:
-          "Provide the github repo name for this project (To generate the Commits Badge): ",
+          "Provide the github repo name for this project (To generate the a badge): ",
         name: "repo",
       },
       {
         type: "input",
-        message: "Provide a brief description of the project!",
+        message: "Provide a brief description of the project: ",
         name: "description",
       },
       {
         type: "input",
-        message: "Installation?",
+        message: "Installation: ",
         name: "installation",
       },
       {
         type: "input",
-        message: "Usage?",
+        message: "Usage: ",
         name: "usage",
       },
       {
         type: "input",
-        message: "License?",
+        message: "License: ",
         name: "license",
       },
       {
         type: "input",
-        message: "Contributors?",
+        message: "Contributors: ",
         name: "contributors",
       },
       {
         type: "input",
-        message: "Tests",
+        message: "Tests: ",
         name: "tests",
       },
     ])
@@ -116,13 +119,14 @@ async function getProjectInfo(user) {
 
 //creating the appendReadme Function
 function appendReadme(response, user) {
-  //saving the badge
-  let badge = `![GitHub commit activity](https://img.shields.io/github/commit-activity/m/${user}/${response.repo}?style=plastic)`;
+  //saving the badge 
+  let badge = `![GitHub commit activity](https://img.shields.io/github/last-commit/${user}/${response.repo}?style=for-the-badge)`;
+  let tableContent= `## Table of Content\n[Description](##Description)<br/>[Installation](##Installation)<br/>[Usage](##Usage)<br/>[License](##License)<br/>[Contributors](##Contributors)<br/>[Tests](##Tests)`
 
   //formating the user responses and saving to 'data' variable
-  let data = `# ${response.project.toUpperCase()}\n${badge}\n\n## Description\n${
+  let data = `# ${response.project.toUpperCase()}\n${badge}\n\n${tableContent}\n\n## Description\n${
     response.description
-  }\n\n## Table of Contents\n TBD\n\n## Installation\n${
+  }\n\n## Installation\n${
     response.installation
   }\n\n## Usage\n${response.usage}\n\n## License\n${
     response.license
@@ -135,6 +139,9 @@ function appendReadme(response, user) {
     if (err) {
       return console.log(err);
     }
-    console.log("Success!");
+    console.log("You Readme.md file has been generated successfully!\n(If you see errors in the Readme.md file, make sure you entered the correct Github Username and Repo for the project)");
   });
 }
+
+
+
