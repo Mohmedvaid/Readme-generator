@@ -45,7 +45,7 @@ async function getData(user) {
   }
   
 
-  //Coverting the raw text to proper format and saving to ''basicData
+  //Coverting the raw text to proper format and saving to 'basicData'
   let basicData = `# My Github Profile\n![Profile Image](${basicInfo.avatar})\\
   Author Name: ${basicInfo.author}\nEmail: ${basicInfo.email}\n`;
 
@@ -54,6 +54,8 @@ async function getData(user) {
 
   //getData function ends
 }
+
+
 
 //Creating createBasicInfo Function
 function createBasicInfo(basicData) {
